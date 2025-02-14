@@ -23,6 +23,8 @@ import {
     OpenAIModelType,
     ollamaModels,
     openaiModels,
+    geminiModels,
+    GeminiModelType,
 } from "./types";
 import { notice } from "./utils";
 
@@ -117,15 +119,17 @@ class SimplePromptSettingTab extends PluginSettingTab {
                 );
         }
 
-        const setModelValue = (value: OpenAIModelType | OllamaModelType) => {
+        const setModelValue = (value: OpenAIModelType | OllamaModelType | GeminiModelType) => {
             switch (this.plugin.settings.provider) {
                 case "openai":
-                    this.plugin.settings.model.openai =
-                        value as OpenAIModelType;
+                    this.plugin.settings.model.openai = value as OpenAIModelType;
                     break;
                 case "ollama":
-                    return (this.plugin.settings.model.ollama =
-                        value as OllamaModelType);
+                    this.plugin.settings.model.ollama = value as OllamaModelType;
+                    break;
+                case "gemini":
+                    this.plugin.settings.model.gemini = value as GeminiModelType;
+                    break;
             }
         };
 
@@ -133,10 +137,18 @@ class SimplePromptSettingTab extends PluginSettingTab {
             .setName("Model")
             .setDesc("Which LLM model to use")
             .addDropdown((dropdown) => {
-                const options =
-                    this.plugin.settings.provider === "ollama"
-                        ? ollamaModels
-                        : openaiModels;
+                let options;
+                switch (this.plugin.settings.provider) {
+                    case "ollama":
+                        options = ollamaModels;
+                        break;
+                    case "gemini":
+                        options = geminiModels;
+                        break;
+                    default:
+                        options = openaiModels;
+                }
+                
                 for (const option of options) {
                     dropdown.addOption(option, option);
                 }
@@ -146,7 +158,7 @@ class SimplePromptSettingTab extends PluginSettingTab {
                             this.plugin.settings.provider
                         ],
                     )
-                    .onChange(async (value: OpenAIModelType) => {
+                    .onChange(async (value) => {
                         setModelValue(value);
                         await this.plugin.saveSettings();
                     });
