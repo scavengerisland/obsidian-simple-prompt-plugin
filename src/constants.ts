@@ -189,10 +189,12 @@ export const DEFAULT_SETTINGS: SimplePromptPluginSettings = {
     provider: "openai",
     apiKey: {
         openai: null,
+        gemini: null,
     },
     model: {
         openai: "gpt-3.5-turbo",
         ollama: "llama3",
+        gemini: "gemini-2.0-flash",
     },
     recentPrompts: [],
     recentsLimit: 5,
@@ -211,4 +213,4 @@ export const SETTINGS_TOGGLE_STREAMING_COMMAND_NAME = "Toggle streaming";
 export const SETTINGS_TOGGLE_RECENT_PROMPTS_COMMAND_NAME =
     "Toggle Enable/Disable Recent Prompts";
 
-export const API_KEY_PROVIDERS: LlmProviderType[] = ["openai"];
+export const API_KEY_PROVIDERS: LlmProviderType[] = ["openai", "gemini"];

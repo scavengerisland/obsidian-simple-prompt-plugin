@@ -6,6 +6,7 @@ import {
     generate as generateOpenai,
     generateStreaming as generateStreamingOpenai,
 } from "./openai/generate";
+import { generate as generateGemini, generateStreaming as generateStreamingGemini } from "./gemini/generate";
 
 export async function generate(
     plugin: SimplePromptPlugin,
@@ -19,6 +20,9 @@ export async function generate(
     }
     if (settings.provider === "ollama") {
         return await generateOllama(settings, prompt, onSuccess);
+    }
+    if (settings.provider === "gemini") {
+        return await generateGemini(settings, prompt, onSuccess);
     }
 }
 
@@ -41,5 +45,14 @@ export async function generateStreaming(
     }
     if (settings.provider === "ollama") {
         notice("Streaming is not supported for Ollama at this time.");
+    }
+    if (settings.provider === "gemini") {
+        return await generateStreamingGemini(
+            settings,
+            prompt,
+            onChunk,
+            onStart,
+            onEnd,
+        );
     }
 }

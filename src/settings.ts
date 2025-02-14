@@ -47,6 +47,7 @@ class SimplePromptSettingTab extends PluginSettingTab {
                     .addOptions({
                         openai: "openai",
                         ollama: "ollama",
+                        gemini: "gemini",
                     })
                     .setValue(this.plugin.settings.provider)
                     .onChange(async (value) => {

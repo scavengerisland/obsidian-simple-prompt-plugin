@@ -18,13 +18,17 @@ export const ollamaModels = [
 ] as const;
 export type OllamaModelType = (typeof ollamaModels)[number];
 
+export const geminiModels = ["gemini-pro", "gemini-2.0-flash"] as const;
+export type GeminiModelType = (typeof geminiModels)[number];
+
 export type LlmModelType = {
     openai: OpenAIModelType;
     ollama: OllamaModelType;
+    gemini: GeminiModelType;
 };
 
-export type LlmProviderApiKeyType = "openai";
-export type LlmProviderType = "ollama" | LlmProviderApiKeyType;
+export type LlmProviderApiKeyType = "openai" | "gemini";
+export type LlmProviderType = "openai" | "gemini" | "ollama" | LlmProviderApiKeyType;
 
 export type CommandType = "selection" | "cursor" | "document" | "youtube";
 
@@ -33,6 +37,7 @@ export interface SimplePromptPluginSettings {
     provider: LlmProviderType;
     apiKey: {
         openai: string | null;
+        gemini: string | null;
     };
     model: LlmModelType;
     recentPrompts: string[];
